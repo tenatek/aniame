@@ -1,13 +1,16 @@
 {
   "name": "aniame",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple, no-dependency JSON schema validator.",
   "main": "Aniame.js",
   "scripts": {
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Tenatek <contact@tenatek.com> (https://tenatek.com)",
+  "contributors": [
+    "Ludovic Cyril Michel <ludovic@tenatek.com> (https://github.com/ludoviccyril)"
+  ],
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
