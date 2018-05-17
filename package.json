@@ -1,0 +1,18 @@
+{
+  "name": "aniame",
+  "version": "0.0.1",
+  "description": "",
+  "main": "Aniame.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "jest": "^22.4.3",
+    "lodash": "^4.17.10"
+  }
+}
