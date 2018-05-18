@@ -1,12 +1,12 @@
 # Aniame
 
-A simple, no-dependency JSON schema validator for Node.js.
+A simple, no-dependency JSON schema validator.
 
 **WARNING:** This package does NOT implement any of the [IETF's JSON Schema drafts](http://json-schema.org/). If that's what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
 
 ## JSON schema specification
 
-JSON objects are made of nested key/value pairs. To describe JSON objects with an Aniame schema, we keep the keys in place, and we merely substitute each value with its description. 
+JSON objects are made of nested key/value pairs. To describe JSON objects with an Aniame schema, we keep the keys in place, and we merely substitute each value with its description.
 
 For example, the following object:
 
@@ -27,12 +27,12 @@ Is described by the following schema:
 }
 ```
 
-Aniame descriptions are JSON objects that have the following keys:
+_Aniame descriptions_ are JSON objects that have the following keys:
 
-* a `type` key (either `string`, `number`, `boolean`, `array`, `object` or `ref`)
-* a `required` key (`true` or `false`)
-* if the type is an `array`, an `elements` key that indicates what the elements of the array should look like. `elements` should be, in turn, an Aniame description
-* if the type is an `object`, a `children` key that indicates what the object should contain. `children` should be, in turn, an object with the expected keys, and, for each key, an Aniame description
+* a `type` key (either `string`, `number`, `boolean`, `array`, `object` or `ref`),
+* a `required` key (`true` or `false`),
+* if the type is an `array`, an `elements` key that indicates what the elements of the array should look like. `elements` should be, in turn, an Aniame description,
+* if the type is an `object`, a `children` key that indicates what the object should contain. `children` should be, in turn, an object with the expected keys, and, for each key, an Aniame description.
 
 ### Example
 
@@ -93,3 +93,26 @@ The following object is valid under the above schema.
   }
 }
 ```
+
+## How to use
+
+### Installation
+
+Just do:
+
+```shell
+npm install --save aniame
+```
+
+And then:
+
+```javascript
+const Aniame = require('aniame');
+```
+
+### `Aniame.validateSchema(schema[, models])`
+
+This method checks that a schema is valid under the Aniame spec. It receives the following parameters:
+
+- the `schema`, a JSON object, 
+- optionally, `models`, an array of strings, the names of other schema definitions that can be referenced with `type: 'ref'`.
