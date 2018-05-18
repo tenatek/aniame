@@ -12,41 +12,41 @@ Under the Aniame specification, a JSON schema is made up of recursive blocks, ea
 
 The following JSON object is a valid schema under the Aniame spec.
 
-```json
+```javascript
 {
-  "firstName": {
-    "type": "string"
+  firstName: {
+    type: 'string'
   },
-  "lastName": {
-    "type": "string",
-    "required": true
+  lastName: {
+    type: 'string',
+    required: true
   },
-  "age": {
-    "type": "number"
+  age: {
+    type: 'number'
   },
-  "graduatedCollege": {
-    "type": "boolean",
-    "required": true
+  graduatedCollege: {
+    type: 'boolean',
+    required: true
   },
-  "nicknames": {
-    "type": "array",
-    "required": false,
-    "elements": {
-      "type": "string"
+  nicknames: {
+    type: 'array',
+    required: false,
+    elements: {
+      type: 'string'
     }
   },
-  "address": {
-    "type": "object",
-    "children": {
-      "street": {
-        "type": "string",
-        "required": true
+  address: {
+    type: 'object',
+    children: {
+      street: {
+        type: 'string',
+        required: true
       },
-      "number": {
-        "type": "number"
+      number: {
+        type: 'number'
       },
-      "city": {
-        "type": "string"
+      city: {
+        type: 'string'
       }
     }
   }
@@ -55,15 +55,15 @@ The following JSON object is a valid schema under the Aniame spec.
 
 The following object is valid under the above schema:
 
-```json
+```javascript
 {
-  "lastName": "Simpson",
-  "age": 32,
-  "graduatedCollege": false,
-  "nicknames": ["Bart", "El Barto"],
-  "address": {
-    "street": "Evergreen Terrace",
-    "number": 742
+  lastName: 'Simpson',
+  age: 32,
+  graduatedCollege: false,
+  nicknames: ['Bart', 'El Barto'],
+  address: {
+    street: 'Evergreen Terrace',
+    number: 742
   }
 }
 ```
