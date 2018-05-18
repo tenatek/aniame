@@ -2,17 +2,17 @@
 
 A simple, no-dependency JSON schema validator for Node.js.
 
-**WARNING:** This package does NOT implement any of the [IETF's JSON Schema drafts](http://json-schema.org/). If that's what you're looking for, have a look at [ajv](https://github.com/epoberezkin/ajv), for example.
+**WARNING:** This package does NOT implement any of the [IETF's JSON Schema drafts](http://json-schema.org/). If that's what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
 
 ## JSON schema specification
 
-JSON objects are made of nested key/value pairs. To describe JSON objects with an Aniame schema, we merely substitute each value with its description. The keys remain the same.
+JSON objects are made of nested key/value pairs. To describe JSON objects with an Aniame schema, we keep the keys in place, and we merely substitute each value with its description. 
 
 For example, the following object:
 
 ```javascript
 {
-  name: 'Simpson';
+  name: 'Simpson'
 }
 ```
 
