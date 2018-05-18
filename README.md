@@ -6,7 +6,33 @@ A simple, no-dependency JSON schema validator for Node.js.
 
 ## JSON schema specification
 
-Under the Aniame specification, a JSON schema is made up of recursive blocks, each describing an expected key/value pair on the JSON object to validate.
+JSON objects are made of nested key/value pairs. To describe JSON objects with an Aniame schema, we merely substitute each value with its description. The keys remain the same.
+
+For example, the following object:
+
+```javascript
+{
+  name: 'Simpson';
+}
+```
+
+Is described by the following schema:
+
+```javascript
+{
+  name: {
+    type: 'string',
+    required: true
+  }
+}
+```
+
+Aniame descriptions are JSON objects that have the following keys:
+
+* a `type` key (either `string`, `number`, `boolean`, `array`, `object` or `ref`)
+* a `required` key (`true` or `false`)
+* if the type is an `array`, an `elements` key that indicates what the elements of the array should look like. `elements` should be, in turn, an Aniame description
+* if the type is an `object`, a `children` key that indicates what the object should contain. `children` should be, in turn, an object with the expected keys, and, for each key, an Aniame description
 
 ### Example
 
@@ -53,7 +79,7 @@ The following JSON object is a valid schema under the Aniame spec.
 }
 ```
 
-The following object is valid under the above schema:
+The following object is valid under the above schema.
 
 ```javascript
 {
