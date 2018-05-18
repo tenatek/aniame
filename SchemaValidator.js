@@ -1,20 +1,20 @@
 const Util = require('./Util');
 
-function validateSchema(schemas, schema, pendingModels) {
+function validateSchema(schema, pendingModels) {
   if (schema == null || schema.constructor !== Object) {
     // check that the schema in an object
     return false;
   }
   for (let key in schema) {
     // check every top-level node of the schema
-    if (!checkNode(schemas, schema[key], pendingModels)) {
+    if (!checkNode(schema[key], pendingModels)) {
       return false;
     }
   }
   return true;
 }
 
-function checkNode(schemas, schemaNode, pendingModels) {
+function checkNode(schemaNode, pendingModels) {
   if (schemaNode == null || schemaNode.constructor !== Object) {
     // check that the node is an object
     return false;
@@ -44,7 +44,7 @@ function checkNode(schemas, schemaNode, pendingModels) {
       // check that the node has only permitted keys
       return false;
     }
-    if (!checkNode(schemas, schemaNode.elements, pendingModels)) {
+    if (!checkNode(schemaNode.elements, pendingModels)) {
       // check members of the array
       return false;
     }
@@ -64,7 +64,7 @@ function checkNode(schemas, schemaNode, pendingModels) {
     }
     for (let key in schemaNode.children) {
       // check children of the object
-      if (!checkNode(schemas, schemaNode.children[key], pendingModels)) {
+      if (!checkNode(schemaNode.children[key], pendingModels)) {
         return false;
       }
     }
@@ -79,10 +79,7 @@ function checkNode(schemas, schemaNode, pendingModels) {
       // check that the 'model' property is a string
       return false;
     }
-    if (
-      !schemas[schemaNode.model] &&
-      !pendingModels.includes(schemaNode.model)
-    ) {
+    if (!pendingModels.includes(schemaNode.model)) {
       // check that the referenced model is either part of the schema or pending
       return false;
     }

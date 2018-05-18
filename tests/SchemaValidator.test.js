@@ -1,48 +1,7 @@
 const SchemaValidator = require('../SchemaValidator');
 
-const schema = {
-  person: {
-    name: {
-      type: 'string',
-      required: true
-    },
-    telephone: {
-      type: 'number'
-    },
-    email: {
-      type: 'string',
-      required: true
-    },
-    pets: {
-      type: 'array',
-      elements: {
-        type: 'object',
-        children: {
-          name: {
-            type: 'object',
-            children: {
-              first: {
-                type: 'string',
-                required: true
-              },
-              family: {
-                type: 'string'
-              }
-            },
-            required: true
-          },
-          age: {
-            type: 'number',
-            required: true
-          }
-        }
-      }
-    }
-  }
-};
-
 test('rejects schema nodes that are not objects', () => {
-  expect(SchemaValidator.validateSchema(schema, {
+  expect(SchemaValidator.validateSchema({
     name: 'Tim',
     telephone: 123456,
     email: 'blue',
@@ -51,7 +10,7 @@ test('rejects schema nodes that are not objects', () => {
 });
 
 test('"required" is optional', () => {
-  expect(SchemaValidator.validateSchema(schema, {
+  expect(SchemaValidator.validateSchema({
     name: {
       type: 'string'
     },
@@ -65,69 +24,75 @@ test('"required" is optional', () => {
 });
 
 test('references work', () => {
-  expect(SchemaValidator.validateSchema(schema, {
-    name: {
-      type: 'ref',
-      model: 'person'
+  expect(SchemaValidator.validateSchema(
+    {
+      name: {
+        type: 'ref',
+        model: 'person'
+      },
+      telephone: {
+        type: 'number',
+        required: true
+      },
+      email: {
+        type: 'string'
+      }
     },
-    telephone: {
-      type: 'number',
-      required: true
-    },
-    email: {
-      type: 'string'
-    }
-  })).toBe(true);
+    ['person']
+  )).toBe(true);
 });
 
 test('complex example', () => {
-  expect(SchemaValidator.validateSchema(schema, {
-    name: {
-      type: 'string',
-      required: true
-    },
-    telephone: {
-      type: 'number'
-    },
-    email: {
-      type: 'string',
-      required: true
-    },
-    friend: {
-      type: 'ref',
-      model: 'person',
-      required: true
-    },
-    pets: {
-      type: 'array',
-      elements: {
-        type: 'object',
-        children: {
-          name: {
-            type: 'object',
-            children: {
-              first: {
-                type: 'string',
-                required: true
+  expect(SchemaValidator.validateSchema(
+    {
+      name: {
+        type: 'string',
+        required: true
+      },
+      telephone: {
+        type: 'number'
+      },
+      email: {
+        type: 'string',
+        required: true
+      },
+      friend: {
+        type: 'ref',
+        model: 'person',
+        required: true
+      },
+      pets: {
+        type: 'array',
+        elements: {
+          type: 'object',
+          children: {
+            name: {
+              type: 'object',
+              children: {
+                first: {
+                  type: 'string',
+                  required: true
+                },
+                family: {
+                  type: 'string'
+                }
               },
-              family: {
-                type: 'string'
-              }
+              required: true
             },
-            required: true
-          },
-          age: {
-            type: 'number',
-            required: true
+            age: {
+              type: 'number',
+              required: true
+            }
           }
         }
       }
-    }
-  })).toBe(true);
+    },
+    ['person']
+  )).toBe(true);
 });
 
 test('rejects unknown attributes', () => {
-  expect(SchemaValidator.validateSchema(schema, {
+  expect(SchemaValidator.validateSchema({
     name: {
       type: 'string',
       required: true,
