@@ -31,8 +31,8 @@ _Aniame descriptions_ are JSON objects that have the following keys:
 
 * a `type` key (either `string`, `number`, `boolean`, `array`, `object` or `ref`),
 * a `required` key (`true` or `false`),
-* if the type is an `array`, an `elements` key that indicates what the elements of the array should look like. `elements` should be, in turn, an Aniame description,
-* if the type is an `object`, a `children` key that indicates what the object should contain. `children` should be, in turn, an object with the expected keys, and, for each key, an Aniame description.
+* if the type is an `array`, an `elements` key that indicates what the elements of the array should look like. `elements` should be, in turn, an _Aniame description_,
+* if the type is an `object`, a `children` key that indicates what the object should contain. `children` should be, in turn, an object with the expected keys, and, for each key, an _Aniame description_.
 
 ### Example
 
