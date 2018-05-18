@@ -110,9 +110,27 @@ And then:
 const Aniame = require('aniame');
 ```
 
-### `Aniame.validateSchema(schema[, models])`
+### Schema validation
 
-This method checks that a schema is valid under the Aniame spec. It receives the following parameters:
+`Aniame.validateSchema(schema[, models])`
+
+This method checks that a schema is valid under the Aniame spec. It returns a boolean and receives the following parameters:
 
 - the `schema`, a JSON object, 
 - optionally, `models`, an array of strings, the names of other schema definitions that can be referenced with `type: 'ref'`.
+
+### Data validation 
+
+`Aniame.validateData(schemas, model, data[, checkRequired, checkRefCallback])`
+
+This method checks that a JSON object is valid under a given schema. It returns a boolean and receives the following parameters:
+
+- the `schemas`, a JSON object. Each key should be the name of a specific schema, and its associated value should be the schema definition,
+- the `model`, a string, the names of the schema the JSON object should comply with,
+- the `data`, the JSON object to validate,
+- optionally, `checkRequired`, a boolean to indicate whether to enforce `required: true`. The default is `false`,
+- optionally, `checkRefCallback(schemas, model, data)`, a function triggered at each `type: ref` node. If it returns `true` or equivalent, the node is considered valid and the validation moves on. Otherwise, the node will be checked against the appropriate schema.
+
+## License & copyright
+
+Copyright (c) 2018 Ludovic Cyril Michel. Licensed under [MIT](https://github.com/tenatek/aniame/blob/master/LICENSE).
