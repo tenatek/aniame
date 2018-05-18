@@ -133,8 +133,7 @@ The following object is valid under the above schema.
   father: {
     // the full 'person' object
   },
-  // alternatively, an id that the callback will use to verify
-  // the referenced object's existence in some DB, for instance
+  // alternatively, database IDs, or anything else
   pets: ['5abe33597d745c1992804194', '5afddf517195746608d181c5']
 }
 ```
