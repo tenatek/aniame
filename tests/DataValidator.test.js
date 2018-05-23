@@ -54,8 +54,22 @@ const schemas = {
         required: true
       }
     }
+  },
+  string: {
+    type: 'string'
   }
 };
+
+test('non-objects can be validated', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
+    schemas,
+    'string',
+    'test',
+    true
+  );
+  expect(result.success).toBe(true);
+});
 
 test('unknown attributes are rejected', async () => {
   expect.assertions(2);
