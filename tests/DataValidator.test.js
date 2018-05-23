@@ -35,8 +35,7 @@ const schemas = {
             },
             race: {
               type: 'ref',
-              model: 'race',
-              required: true
+              model: 'race'
             }
           }
         }
@@ -110,17 +109,17 @@ test('types are checked', async () => {
     schemas,
     'person',
     {
-      name: 'true',
+      name: true,
       telephone: '534',
       email: 'test'
     },
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['telephone']]);
+  expect(result.errorPaths).toEqual([['name'], ['telephone']]);
 });
 
-test('array elements are type-checked', async () => {
+test('array elements are validated', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
     schemas,
@@ -131,17 +130,107 @@ test('array elements are type-checked', async () => {
       email: 'test',
       pets: [
         {
-          age: {
-            name: 'Bob'
-          },
           name: {
             first: 'tom'
           }
+        },
+        3
+      ]
+    },
+    true
+  );
+  expect(result.success).toBe(false);
+  expect(result.errorPaths).toEqual([['pets', 1]]);
+});
+
+test('nested objects are validated', async () => {
+  expect.assertions(2);
+  let result = await DataValidator.validateData(
+    schemas,
+    'person',
+    {
+      name: 'true',
+      telephone: 534,
+      email: 'test',
+      pets: [
+        {
+          name: {
+            first: 'tom'
+          }
+        },
+        {
+          age: 3
         }
       ]
     },
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 0, 'race'], ['pets', 0, 'age']]);
+  expect(result.errorPaths).toEqual([['pets', 1, 'name'], ['pets', 1, 'age']]);
+});
+
+test('references can be checked against their schema', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
+    schemas,
+    'person',
+    {
+      name: 'true',
+      telephone: 534,
+      email: 'test',
+      pets: [
+        {
+          name: {
+            first: 'tom'
+          }
+        },
+        {
+          name: {
+            first: 'blue'
+          },
+          race: {
+            name: 'cocker',
+            classification: 3
+          }
+        }
+      ]
+    },
+    true
+  );
+  expect(result.success).toBe(true);
+});
+
+test('references can be checked with a callback', async () => {
+  expect.assertions(2);
+  let result = await DataValidator.validateData(
+    schemas,
+    'person',
+    {
+      name: 'true',
+      telephone: 534,
+      email: 'test',
+      pets: [
+        {
+          name: {
+            first: 'tom'
+          }
+        },
+        {
+          name: {
+            first: 'blue'
+          },
+          race: 5
+        }
+      ]
+    },
+    true,
+    (s, m, d) => {
+      if (d === 6) {
+        return true;
+      }
+      return false;
+    }
+  );
+  expect(result.success).toBe(false);
+  expect(result.errorPaths).toEqual([['pets', 1, 'race']]);
 });
