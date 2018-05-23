@@ -2,58 +2,65 @@ const DataValidator = require('../DataValidator');
 
 const schemas = {
   person: {
-    name: {
-      type: 'string',
-      required: true
-    },
-    telephone: {
-      type: 'number'
-    },
-    email: {
-      type: 'string',
-      required: true
-    },
-    pets: {
-      type: 'array',
-      elements: {
-        type: 'object',
-        children: {
-          name: {
-            type: 'object',
-            children: {
-              first: {
-                type: 'string',
-                required: true
+    type: 'object',
+    children: {
+      name: {
+        type: 'string',
+        required: true
+      },
+      telephone: {
+        type: 'number'
+      },
+      email: {
+        type: 'string',
+        required: true
+      },
+      pets: {
+        type: 'array',
+        elements: {
+          type: 'object',
+          children: {
+            name: {
+              type: 'object',
+              children: {
+                first: {
+                  type: 'string',
+                  required: true
+                },
+                family: {
+                  type: 'string'
+                }
               },
-              family: {
-                type: 'string'
-              }
+              required: true
             },
-            required: true
-          },
-          race: {
-            type: 'ref',
-            model: 'race',
-            required: true
+            race: {
+              type: 'ref',
+              model: 'race',
+              required: true
+            }
           }
         }
       }
     }
   },
   race: {
-    name: {
-      type: 'string',
-      required: true
-    },
-    classification: {
-      type: 'number',
-      required: true
+    type: 'object',
+    children: {
+      name: {
+        type: 'string',
+        required: true
+      },
+      classification: {
+        type: 'number',
+        required: true
+      }
     }
   }
 };
 
-test('rejects unknown attributes', () => {
-  expect(DataValidator.validateData(
+test('rejects unknown attributes', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
     schemas,
     'person',
     {
@@ -63,11 +70,13 @@ test('rejects unknown attributes', () => {
       test: true
     },
     true
-  )).resolves.toBe(false);
+  );
+  expect(result.success).toBe(false);
 });
 
-test('ignores optional attributes', () => {
-  expect(DataValidator.validateData(
+test('ignores optional attributes', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
     schemas,
     'person',
     {
@@ -75,11 +84,13 @@ test('ignores optional attributes', () => {
       email: 'blue'
     },
     true
-  )).resolves.toBe(true);
+  );
+  expect(result.success).toBe(true);
 });
 
-test('enforces required attributes', () => {
-  expect(DataValidator.validateData(
+test('enforces required attributes', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
     schemas,
     'person',
     {
@@ -87,11 +98,13 @@ test('enforces required attributes', () => {
       telephone: 534
     },
     true
-  )).resolves.toBe(false);
+  );
+  expect(result.success).toBe(false);
 });
 
-test('checks attribute types', () => {
-  expect(DataValidator.validateData(
+test('checks attribute types', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
     schemas,
     'person',
     {
@@ -100,11 +113,13 @@ test('checks attribute types', () => {
       email: 'test'
     },
     true
-  )).resolves.toBe(false);
+  );
+  expect(result.success).toBe(false);
 });
 
-test('checks array element types', () => {
-  expect(DataValidator.validateData(
+test('checks array element types', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
     schemas,
     'person',
     {
@@ -123,5 +138,6 @@ test('checks array element types', () => {
       ]
     },
     true
-  )).resolves.toBe(false);
+  );
+  expect(result.success).toBe(false);
 });

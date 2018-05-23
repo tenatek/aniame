@@ -1,140 +1,115 @@
-async function checkNode(
-  schemas,
-  schemaNode,
-  dataNode,
-  checkRequired,
-  checkRefCallback
-) {
-  // filters out unknown attributes
+const ValidationResult = require('./ValidationResult');
 
-  if (schemaNode === undefined) {
-    return false;
-  }
-
-  // first-level validation
-
-  if (typeof schemaNode.type !== 'string') {
-    if (dataNode == null || dataNode.constructor !== Object) {
-      return false;
-    }
-    if (checkRequired) {
-      for (let key in schemaNode) {
-        if (schemaNode[key].required && dataNode[key] === undefined) {
-          return false;
-        }
-      }
-    }
-    for (let key in dataNode) {
-      if (
-        !(await checkNode(
-          schemas,
-          schemaNode[key],
-          dataNode[key],
-          checkRequired,
-          checkRefCallback
-        ))
-      ) {
-        return false;
-      }
-    }
-  } else if (schemaNode.type === 'array') {
-    // handles arrays
-
-    if (dataNode == null || dataNode.constructor !== Array) {
-      return false;
-    }
-    for (let element of dataNode) {
-      if (
-        !(await checkNode(
-          schemas,
-          schemaNode.elements,
-          element,
-          true,
-          checkRefCallback
-        ))
-      ) {
-        return false;
-      }
-    }
-  } else if (schemaNode.type === 'object') {
-    // handles objects
-
-    if (dataNode == null || dataNode.constructor !== Object) {
-      return false;
-    }
-    if (checkRequired) {
-      for (let key in schemaNode.children) {
-        if (schemaNode.children[key].required && dataNode[key] === undefined) {
-          return false;
-        }
-      }
-    }
-    for (let key in dataNode) {
-      if (
-        !(await checkNode(
-          schemas,
-          schemaNode.children[key],
-          dataNode[key],
-          checkRequired,
-          checkRefCallback
-        ))
-      ) {
-        return false;
-      }
-    }
-  } else if (schemaNode.type === 'ref') {
-    // handles references
-
-    if (
-      !(await checkRef(schemas, schemaNode.model, dataNode, checkRefCallback))
-    ) {
-      return false;
-    }
-  } else if (schemaNode.type === 'file') {
-    // handles files
-
-    if (typeof dataNode !== 'string') {
-      return false;
-    }
-  } else if (typeof dataNode !== schemaNode.type) {
-    // handles string, number, boolean
-
-    return false;
-  }
-
-  return true;
-}
-
-async function checkRef(schemas, model, dataNode, checkRefCallback) {
-  if (checkRefCallback && (await checkRefCallback(schemas, model, dataNode))) {
-    return true;
-  }
-
-  if (
-    dataNode != null &&
-    dataNode.constructor === Object &&
-    (await validateData(schemas, model, dataNode, true))
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
-async function validateData(
-  schemas,
-  model,
-  data,
-  checkRequired,
-  checkRefCallback
-) {
-  return checkNode(
+class DataValidator {
+  static async checkNode(
     schemas,
-    schemas[model],
+    schemaNode,
+    dataNode,
+    dataPath,
+    checkRequired,
+    checkRefCallback,
+    validationResult
+  ) {
+    if (schemaNode.type === 'array') {
+      // handles arrays
+
+      if (dataNode == null || dataNode.constructor !== Array) {
+        validationResult.addErrorPath(dataPath);
+      } else {
+        for (let i = 0; i < dataNode.length; i += 1) {
+          let elementDataPath = dataPath.slice();
+          elementDataPath.push(i);
+          await DataValidator.checkNode(
+            schemas,
+            schemaNode.elements,
+            dataNode[i],
+            elementDataPath,
+            true,
+            checkRefCallback,
+            validationResult
+          );
+        }
+      }
+    } else if (schemaNode.type === 'object') {
+      // handles objects
+
+      if (dataNode == null || dataNode.constructor !== Object) {
+        validationResult.addErrorPath(dataPath);
+      } else {
+        if (checkRequired) {
+          for (let key in schemaNode.children) {
+            if (
+              schemaNode.children[key].required &&
+              dataNode[key] === undefined
+            ) {
+              let errorPath = dataPath.slice();
+              errorPath.push(key);
+              validationResult.addErrorPath(errorPath);
+            }
+          }
+        }
+        for (let key in dataNode) {
+          if (schemaNode.children[key] === undefined) {
+            let errorPath = dataPath.slice();
+            errorPath.push(key);
+            validationResult.addErrorPath(errorPath);
+          } else {
+            let childDataPath = dataPath.slice();
+            childDataPath.push(key);
+            await DataValidator.checkNode(
+              schemas,
+              schemaNode.children[key],
+              dataNode[key],
+              childDataPath,
+              checkRequired,
+              checkRefCallback,
+              validationResult
+            );
+          }
+        }
+      }
+    } else if (schemaNode.type === 'ref') {
+      // handles references
+      if (checkRefCallback) {
+        if (!(await checkRefCallback(schemas, schemaNode.model, dataNode))) {
+          validationResult.addErrorPath(dataPath);
+        }
+      } else {
+        await DataValidator.checkNode(
+          schemas,
+          schemas[schemaNode.model],
+          dataNode,
+          dataPath,
+          checkRequired,
+          checkRefCallback,
+          validationResult
+        );
+      }
+    } else if (typeof dataNode !== schemaNode.type) {
+      // handles string, number, boolean
+      validationResult.addErrorPath(dataPath);
+    }
+  }
+
+  static async validateData(
+    schemas,
+    model,
     data,
     checkRequired,
     checkRefCallback
-  );
+  ) {
+    let validationResult = new ValidationResult();
+    await DataValidator.checkNode(
+      schemas,
+      schemas[model],
+      data,
+      [],
+      checkRequired,
+      checkRefCallback,
+      validationResult
+    );
+    return validationResult;
+  }
 }
 
-module.exports = { validateData };
+module.exports = DataValidator;

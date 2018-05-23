@@ -1,8 +1,10 @@
-function checkPossibleKeys(object, possibleKeys) {
-  for (let key in object) {
-    if (!possibleKeys.includes(key)) return false;
+class Util {
+  static checkPossibleKeys(object, possibleKeys) {
+    for (let key in object) {
+      if (!possibleKeys.includes(key)) return false;
+    }
+    return true;
   }
-  return true;
 }
 
-module.exports = { checkPossibleKeys };
+module.exports = Util;
