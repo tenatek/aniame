@@ -58,8 +58,8 @@ const schemas = {
   }
 };
 
-test('rejects unknown attributes', async () => {
-  expect.assertions(1);
+test('unknown attributes are rejected', async () => {
+  expect.assertions(2);
   let result = await DataValidator.validateData(
     schemas,
     'person',
@@ -72,9 +72,10 @@ test('rejects unknown attributes', async () => {
     true
   );
   expect(result.success).toBe(false);
+  expect(result.errorPaths).toEqual([['test']]);
 });
 
-test('ignores optional attributes', async () => {
+test('optional attributes can be omitted', async () => {
   expect.assertions(1);
   let result = await DataValidator.validateData(
     schemas,
@@ -88,8 +89,8 @@ test('ignores optional attributes', async () => {
   expect(result.success).toBe(true);
 });
 
-test('enforces required attributes', async () => {
-  expect.assertions(1);
+test('required attributes cannot be omitted', async () => {
+  expect.assertions(2);
   let result = await DataValidator.validateData(
     schemas,
     'person',
@@ -100,10 +101,11 @@ test('enforces required attributes', async () => {
     true
   );
   expect(result.success).toBe(false);
+  expect(result.errorPaths).toEqual([['email']]);
 });
 
-test('checks attribute types', async () => {
-  expect.assertions(1);
+test('types are checked', async () => {
+  expect.assertions(2);
   let result = await DataValidator.validateData(
     schemas,
     'person',
@@ -115,10 +117,11 @@ test('checks attribute types', async () => {
     true
   );
   expect(result.success).toBe(false);
+  expect(result.errorPaths).toEqual([['telephone']]);
 });
 
-test('checks array element types', async () => {
-  expect.assertions(1);
+test('array elements are type-checked', async () => {
+  expect.assertions(2);
   let result = await DataValidator.validateData(
     schemas,
     'person',
@@ -140,4 +143,5 @@ test('checks array element types', async () => {
     true
   );
   expect(result.success).toBe(false);
+  expect(result.errorPaths).toEqual([['pets', 0, 'race'], ['pets', 0, 'age']]);
 });
