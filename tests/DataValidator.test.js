@@ -1,4 +1,4 @@
-const DataValidator = require('../DataValidator');
+const DataValidator = require('../lib/DataValidator');
 
 const schemas = {
   person: {

@@ -1,4 +1,4 @@
-const SchemaValidator = require('../SchemaValidator');
+const SchemaValidator = require('../lib/SchemaValidator');
 
 test('rejects schema nodes that are not objects', () => {
   expect(SchemaValidator.validateSchema({
