@@ -27,13 +27,11 @@ class SchemaValidator {
     if (schemaNode.type === 'array') {
       // handles array types
 
-      if (
-        !Util.checkPossibleKeys(schemaNode, ['type', 'required', 'elements'])
-      ) {
+      if (!Util.checkPossibleKeys(schemaNode, ['type', 'required', 'items'])) {
         // check that the node has only permitted keys
         return false;
       }
-      if (!SchemaValidator.checkNode(schemaNode.elements, pendingModels)) {
+      if (!SchemaValidator.checkNode(schemaNode.items, pendingModels)) {
         // check members of the array
         return false;
       }
@@ -41,22 +39,22 @@ class SchemaValidator {
       // handles object types
 
       if (
-        !Util.checkPossibleKeys(schemaNode, ['type', 'required', 'children'])
+        !Util.checkPossibleKeys(schemaNode, ['type', 'required', 'properties'])
       ) {
         // check that the node has only permitted keys
         return false;
       }
       if (
-        schemaNode.children == null ||
-        schemaNode.children.constructor !== Object
+        schemaNode.properties == null ||
+        schemaNode.properties.constructor !== Object
       ) {
-        // check that the 'children' property is an object
+        // check that the 'properties' property is an object
         return false;
       }
-      for (let key in schemaNode.children) {
-        // check children of the object
+      for (let key in schemaNode.properties) {
+        // check properties of the object
         if (
-          !SchemaValidator.checkNode(schemaNode.children[key], pendingModels)
+          !SchemaValidator.checkNode(schemaNode.properties[key], pendingModels)
         ) {
           return false;
         }

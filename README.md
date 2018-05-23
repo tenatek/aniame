@@ -2,7 +2,7 @@
 
 A simple, no-dependency JSON schema validator.
 
-**WARNING:** This package does NOT implement any of the [IETF's JSON Schema drafts](http://json-schema.org/). If that's what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
+**WARNING:** This package does not comply with the [IETF's JSON Schema drafts](http://json-schema.org/), although there are some similarities. If full compliance is what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
 
 ## JSON schema specification
 
@@ -19,7 +19,7 @@ Is described by the following schema:
 ```javascript
 {
   type: 'array',
-  elements: {
+  items: {
     type: 'string'
   }
 }
@@ -30,7 +30,7 @@ Where both:
 ```javascript
 {
   type: 'array',
-  elements: ...
+  items: ...
 }
 ```
 
@@ -56,15 +56,15 @@ _Descriptors_ are JSON objects that have the following keys:
 
 Used to indicate that the expected value is a JSON object. 
 
-With `object`s, the _descriptor_ must contain the `children` key to describe what the object should contain. `children`'s value should be an object with the expected keys, and, for each key, a _descriptor_ of the key's expected value.
+With `object`s, the _descriptor_ must contain the `properties` key to describe what the object should contain. `properties`'s value should be an object with the expected keys, and, for each key, a _descriptor_ of the key's expected value.
 
 ```javascript
 {
   type: 'object',
-  children: {
+  properties: {
     address: {
       type: 'object',
-      children: {
+      properties: {
         street: {
           type: 'string',
           required: true
@@ -98,16 +98,16 @@ The following object is valid under the above schema.
 
 Used to indicate that the expected value is an array. 
 
-With `array`s, the _descriptor_ must contain the `elements` key, whose value is itself the _descriptor_ of the elements of the array.
+With `array`s, the _descriptor_ must contain the `items` key, whose value is itself the _descriptor_ of the items of the array.
 
 ```javascript
 {
   type: 'object',
-  children: {
+  properties: {
     nicknames: {
       type: 'array',
       required: false,
-      elements: {
+      items: {
         type: 'string'
       }
     }
@@ -136,14 +136,14 @@ References can be anything, as they will be validated by an optional, user-provi
 ```javascript
 {
   type: 'object',
-  children: {
+  properties: {
     father: {
       type: 'ref',
       model: 'person'
     },
     pets: {
       type: 'array',
-      elements: {
+      items: {
         type: 'ref',
         model: 'animal'
       }

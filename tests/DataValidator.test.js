@@ -3,7 +3,7 @@ const DataValidator = require('../DataValidator');
 const schemas = {
   person: {
     type: 'object',
-    children: {
+    properties: {
       name: {
         type: 'string',
         required: true
@@ -17,12 +17,12 @@ const schemas = {
       },
       pets: {
         type: 'array',
-        elements: {
+        items: {
           type: 'object',
-          children: {
+          properties: {
             name: {
               type: 'object',
-              children: {
+              properties: {
                 first: {
                   type: 'string',
                   required: true
@@ -44,7 +44,7 @@ const schemas = {
   },
   race: {
     type: 'object',
-    children: {
+    properties: {
       name: {
         type: 'string',
         required: true
@@ -133,7 +133,7 @@ test('types are checked', async () => {
   expect(result.errorPaths).toEqual([['name'], ['telephone']]);
 });
 
-test('array elements are validated', async () => {
+test('array items are validated', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
     schemas,

@@ -3,7 +3,7 @@ const SchemaValidator = require('../SchemaValidator');
 test('rejects schema nodes that are not objects', () => {
   expect(SchemaValidator.validateSchema({
     type: 'object',
-    children: {
+    properties: {
       name: 'Tim',
       telephone: 123456,
       email: 'blue',
@@ -15,7 +15,7 @@ test('rejects schema nodes that are not objects', () => {
 test('"required" is optional', () => {
   expect(SchemaValidator.validateSchema({
     type: 'object',
-    children: {
+    properties: {
       name: {
         type: 'string'
       },
@@ -33,7 +33,7 @@ test('references work', () => {
   expect(SchemaValidator.validateSchema(
     {
       type: 'object',
-      children: {
+      properties: {
         name: {
           type: 'ref',
           model: 'person'
@@ -55,7 +55,7 @@ test('complex example', () => {
   expect(SchemaValidator.validateSchema(
     {
       type: 'object',
-      children: {
+      properties: {
         name: {
           type: 'string',
           required: true
@@ -74,12 +74,12 @@ test('complex example', () => {
         },
         pets: {
           type: 'array',
-          elements: {
+          items: {
             type: 'object',
-            children: {
+            properties: {
               name: {
                 type: 'object',
-                children: {
+                properties: {
                   first: {
                     type: 'string',
                     required: true
@@ -106,7 +106,7 @@ test('complex example', () => {
 test('rejects unknown attributes', () => {
   expect(SchemaValidator.validateSchema({
     type: 'object',
-    children: {
+    properties: {
       name: {
         type: 'string',
         required: true,
@@ -121,12 +121,12 @@ test('rejects unknown attributes', () => {
       },
       pets: {
         type: 'array',
-        elements: {
+        items: {
           type: 'object',
-          children: {
+          properties: {
             name: {
               type: 'object',
-              children: {
+              properties: {
                 first: {
                   type: 'string',
                   required: true

@@ -21,7 +21,7 @@ class DataValidator {
           elementDataPath.push(i);
           await DataValidator.checkNode(
             schemas,
-            schemaNode.elements,
+            schemaNode.items,
             dataNode[i],
             elementDataPath,
             true,
@@ -37,9 +37,9 @@ class DataValidator {
         validationResult.addErrorPath(dataPath);
       } else {
         if (checkRequired) {
-          for (let key in schemaNode.children) {
+          for (let key in schemaNode.properties) {
             if (
-              schemaNode.children[key].required &&
+              schemaNode.properties[key].required &&
               dataNode[key] === undefined
             ) {
               let errorPath = dataPath.slice();
@@ -49,7 +49,7 @@ class DataValidator {
           }
         }
         for (let key in dataNode) {
-          if (schemaNode.children[key] === undefined) {
+          if (schemaNode.properties[key] === undefined) {
             let errorPath = dataPath.slice();
             errorPath.push(key);
             validationResult.addErrorPath(errorPath);
@@ -58,7 +58,7 @@ class DataValidator {
             childDataPath.push(key);
             await DataValidator.checkNode(
               schemas,
-              schemaNode.children[key],
+              schemaNode.properties[key],
               dataNode[key],
               childDataPath,
               checkRequired,
