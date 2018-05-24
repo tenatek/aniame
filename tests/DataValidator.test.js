@@ -85,7 +85,7 @@ test('unknown attributes are rejected', async () => {
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['test']]);
+  expect(result.getErrorPathsAsArrays()).toEqual([['test']]);
 });
 
 test('optional attributes can be omitted', async () => {
@@ -114,7 +114,7 @@ test('required attributes cannot be omitted', async () => {
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['email']]);
+  expect(result.getErrorPathsAsArrays()).toEqual([['email']]);
 });
 
 test('types are checked', async () => {
@@ -130,7 +130,7 @@ test('types are checked', async () => {
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['name'], ['telephone']]);
+  expect(result.getErrorPathsAsArrays()).toEqual([['name'], ['telephone']]);
 });
 
 test('array items are validated', async () => {
@@ -154,7 +154,7 @@ test('array items are validated', async () => {
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 1]]);
+  expect(result.getErrorPathsAsArrays()).toEqual([['pets', 1]]);
 });
 
 test('nested objects are validated', async () => {
@@ -180,7 +180,10 @@ test('nested objects are validated', async () => {
     true
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 1, 'name'], ['pets', 1, 'age']]);
+  expect(result.getErrorPathsAsArrays()).toEqual([
+    ['pets', 1, 'name'],
+    ['pets', 1, 'age']
+  ]);
 });
 
 test('references can be checked against their schema', async () => {
@@ -246,5 +249,5 @@ test('references can be checked with a callback', async () => {
     }
   );
   expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 1, 'race']]);
+  expect(result.getErrorPathsAsArrays()).toEqual([['pets', 1, 'race']]);
 });
