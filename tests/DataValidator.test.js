@@ -62,27 +62,21 @@ const schemas = {
 
 test('non-objects can be validated', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
-    schemas,
-    'string',
-    'test',
-    true
-  );
+  let result = await DataValidator.validateData('test', true, schemas.string);
   expect(result.success).toBe(true);
 });
 
 test('unknown attributes are rejected', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'Tim',
       telephone: 123456,
       email: 'blue',
       test: true
     },
-    true
+    true,
+    schemas.person
   );
   expect(result.success).toBe(false);
   expect(result.getErrorPathsAsArrays()).toEqual([['test']]);
@@ -91,13 +85,12 @@ test('unknown attributes are rejected', async () => {
 test('optional attributes can be omitted', async () => {
   expect.assertions(1);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'Tim',
       email: 'blue'
     },
-    true
+    true,
+    schemas.person
   );
   expect(result.success).toBe(true);
 });
@@ -105,13 +98,12 @@ test('optional attributes can be omitted', async () => {
 test('required attributes cannot be omitted', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'true',
       telephone: 534
     },
-    true
+    true,
+    schemas.person
   );
   expect(result.success).toBe(false);
   expect(result.getErrorPathsAsArrays()).toEqual([['email']]);
@@ -120,14 +112,13 @@ test('required attributes cannot be omitted', async () => {
 test('types are checked', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: true,
       telephone: '534',
       email: 'test'
     },
-    true
+    true,
+    schemas.person
   );
   expect(result.success).toBe(false);
   expect(result.getErrorPathsAsArrays()).toEqual([['name'], ['telephone']]);
@@ -136,8 +127,6 @@ test('types are checked', async () => {
 test('array items are validated', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'true',
       telephone: 534,
@@ -151,7 +140,8 @@ test('array items are validated', async () => {
         3
       ]
     },
-    true
+    true,
+    schemas.person
   );
   expect(result.success).toBe(false);
   expect(result.getErrorPathsAsArrays()).toEqual([['pets', 1]]);
@@ -160,8 +150,6 @@ test('array items are validated', async () => {
 test('nested objects are validated', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'true',
       telephone: 534,
@@ -177,7 +165,8 @@ test('nested objects are validated', async () => {
         }
       ]
     },
-    true
+    true,
+    schemas.person
   );
   expect(result.success).toBe(false);
   expect(result.getErrorPathsAsArrays()).toEqual([
@@ -189,8 +178,6 @@ test('nested objects are validated', async () => {
 test('references can be checked against their schema', async () => {
   expect.assertions(1);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'true',
       telephone: 534,
@@ -212,7 +199,9 @@ test('references can be checked against their schema', async () => {
         }
       ]
     },
-    true
+    true,
+    'person',
+    schemas
   );
   expect(result.success).toBe(true);
 });
@@ -220,8 +209,6 @@ test('references can be checked against their schema', async () => {
 test('references can be checked with a callback', async () => {
   expect.assertions(2);
   let result = await DataValidator.validateData(
-    schemas,
-    'person',
     {
       name: 'true',
       telephone: 534,
@@ -241,6 +228,8 @@ test('references can be checked with a callback', async () => {
       ]
     },
     true,
+    'person',
+    schemas,
     (s, m, d) => {
       if (d === 6) {
         return true;
