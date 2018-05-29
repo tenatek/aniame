@@ -65,6 +65,7 @@ test('complex example', () => {
         },
         email: {
           type: 'string',
+          indexAs: ['email'],
           required: true
         },
         friend: {

@@ -10,7 +10,7 @@ const schema = {
     },
     telephone: {
       type: 'ref',
-      indexAs: 'ref',
+      indexAs: ['ref'],
       model: 'some-model'
     },
     email: {
@@ -27,7 +27,7 @@ const schema = {
             properties: {
               first: {
                 type: 'ref',
-                indexAs: 'ref',
+                indexAs: ['ref'],
                 model: 'some-model',
                 required: true
               },
@@ -39,7 +39,7 @@ const schema = {
           },
           age: {
             type: 'ref',
-            indexAs: 'ref',
+            indexAs: ['ref'],
             model: 'some-model',
             required: true
           }
@@ -51,7 +51,7 @@ const schema = {
 
 test('get correct relation paths', () => {
   expect.assertions(1);
-  let indexingResults = SchemaIndexer.index(schema, ['ref'], ['model']);
+  let indexingResults = SchemaIndexer.index(schema, ['model']);
   let expectedResults = {
     ref: [
       {
