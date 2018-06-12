@@ -7,7 +7,7 @@ This README contains:
 * [JSON schema specification](#json-schema-specification)
   * [Objects](#objects)
   * [Arrays](#arrays)
-  * [References](references)
+  * [References](#references)
 * [How to use](#how-to-use)
   * [Installation](#installation)
   * [Schema validation](#schema-validation)
