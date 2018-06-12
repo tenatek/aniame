@@ -35,7 +35,7 @@ const schemas = {
             },
             race: {
               type: 'ref',
-              model: 'race'
+              ref: 'race'
             }
           }
         }
@@ -62,7 +62,7 @@ const schemas = {
 
 test('non-objects can be validated', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData('test', true, schemas.string);
+  let result = await DataValidator.validateData('test', schemas.string);
   expect(result.success).toBe(true);
 });
 
@@ -75,7 +75,6 @@ test('unknown attributes are rejected', async () => {
       email: 'blue',
       test: true
     },
-    true,
     schemas.person
   );
   expect(result.success).toBe(false);
@@ -89,7 +88,6 @@ test('optional attributes can be omitted', async () => {
       name: 'Tim',
       email: 'blue'
     },
-    true,
     schemas.person
   );
   expect(result.success).toBe(true);
@@ -102,7 +100,6 @@ test('required attributes cannot be omitted', async () => {
       name: 'true',
       telephone: 534
     },
-    true,
     schemas.person
   );
   expect(result.success).toBe(false);
@@ -117,7 +114,6 @@ test('types are checked', async () => {
       telephone: '534',
       email: 'test'
     },
-    true,
     schemas.person
   );
   expect(result.success).toBe(false);
@@ -140,7 +136,6 @@ test('array items are validated', async () => {
         3
       ]
     },
-    true,
     schemas.person
   );
   expect(result.success).toBe(false);
@@ -165,7 +160,6 @@ test('nested objects are validated', async () => {
         }
       ]
     },
-    true,
     schemas.person
   );
   expect(result.success).toBe(false);
@@ -199,7 +193,6 @@ test('references can be checked against their schema', async () => {
         }
       ]
     },
-    true,
     'person',
     schemas
   );
@@ -227,7 +220,6 @@ test('references can be checked with a callback', async () => {
         }
       ]
     },
-    true,
     'person',
     schemas,
     (s, m, d) => {

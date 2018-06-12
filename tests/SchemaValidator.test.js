@@ -36,7 +36,7 @@ test('references work', () => {
       properties: {
         name: {
           type: 'ref',
-          model: 'person'
+          ref: 'person'
         },
         telephone: {
           type: 'number',
@@ -70,7 +70,7 @@ test('complex example', () => {
         },
         friend: {
           type: 'ref',
-          model: 'person',
+          ref: 'person',
           required: true
         },
         pets: {
