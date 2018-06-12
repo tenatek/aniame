@@ -14,6 +14,7 @@ This README contains:
   * [Schema indexing](#schema-indexing)
   * [Data validation](#data-validation)
 * [JSON paths](#json-paths)
+* [Copyright & license](#copyright--license)
 
 **WARNING:** This package does not comply with the [IETF's JSON Schema drafts](http://json-schema.org/), although there are some similarities. If full compliance is what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
 
