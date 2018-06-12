@@ -11,7 +11,7 @@ const schema = {
     telephone: {
       type: 'ref',
       indexAs: ['ref'],
-      model: 'some-model'
+      ref: 'some-model'
     },
     email: {
       type: 'string',
@@ -28,7 +28,7 @@ const schema = {
               first: {
                 type: 'ref',
                 indexAs: ['ref'],
-                model: 'some-model',
+                ref: 'some-model',
                 required: true
               },
               family: {
@@ -40,7 +40,7 @@ const schema = {
           age: {
             type: 'ref',
             indexAs: ['ref'],
-            model: 'some-model',
+            ref: 'some-model',
             required: true
           }
         }
@@ -51,14 +51,14 @@ const schema = {
 
 test('get correct relation paths', () => {
   expect.assertions(1);
-  let indexingResults = SchemaIndexer.indexSchema(schema, ['model']);
+  let indexingResults = SchemaIndexer.indexSchema(schema, ['ref']);
   let expectedResults = {
     indexes: {
       ref: [
         {
           path: new JSONPath().addPathSegment('telephone'),
           data: {
-            model: 'some-model'
+            ref: 'some-model'
           }
         },
         {
@@ -68,7 +68,7 @@ test('get correct relation paths', () => {
             .addPathSegment('name')
             .addPathSegment('first'),
           data: {
-            model: 'some-model'
+            ref: 'some-model'
           }
         },
         {
@@ -77,7 +77,7 @@ test('get correct relation paths', () => {
             .addPathSegment(null)
             .addPathSegment('age'),
           data: {
-            model: 'some-model'
+            ref: 'some-model'
           }
         }
       ]
