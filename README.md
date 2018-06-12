@@ -61,8 +61,9 @@ Are _descriptors_.
 _Descriptors_ are JSON objects that have the following keys:
 
 * a `type` key (either `string`, `number`, `boolean`, `object`, `array` or `ref`).
-* a `required` key (`true` or `false`).
-* an `indexAs` key (see [schema indexing](#schema-indexing)).
+* an optional `description` key, which, if present, must be a string.
+* an optional `required` key (`true` or `false`).
+* an optional `indexAs` key (see [schema indexing](#schema-indexing)).
 * other keys depending on the `type`.
 
 ### Objects

@@ -51,7 +51,7 @@ const schema = {
 
 test('get correct relation paths', () => {
   expect.assertions(1);
-  let indexingResults = SchemaIndexer.index(schema, ['model']);
+  let indexingResults = SchemaIndexer.indexSchema(schema, ['model']);
   let expectedResults = {
     indexes: {
       ref: [
