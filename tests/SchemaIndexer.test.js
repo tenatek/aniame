@@ -53,33 +53,35 @@ test('get correct relation paths', () => {
   expect.assertions(1);
   let indexingResults = SchemaIndexer.index(schema, ['model']);
   let expectedResults = {
-    ref: [
-      {
-        path: new JSONPath().addPathSegment('telephone'),
-        data: {
-          model: 'some-model'
+    indexes: {
+      ref: [
+        {
+          path: new JSONPath().addPathSegment('telephone'),
+          data: {
+            model: 'some-model'
+          }
+        },
+        {
+          path: new JSONPath()
+            .addPathSegment('pets')
+            .addPathSegment(null)
+            .addPathSegment('name')
+            .addPathSegment('first'),
+          data: {
+            model: 'some-model'
+          }
+        },
+        {
+          path: new JSONPath()
+            .addPathSegment('pets')
+            .addPathSegment(null)
+            .addPathSegment('age'),
+          data: {
+            model: 'some-model'
+          }
         }
-      },
-      {
-        path: new JSONPath()
-          .addPathSegment('pets')
-          .addPathSegment(null)
-          .addPathSegment('name')
-          .addPathSegment('first'),
-        data: {
-          model: 'some-model'
-        }
-      },
-      {
-        path: new JSONPath()
-          .addPathSegment('pets')
-          .addPathSegment(null)
-          .addPathSegment('age'),
-        data: {
-          model: 'some-model'
-        }
-      }
-    ]
+      ]
+    }
   };
   expect(indexingResults).toEqual(expectedResults);
 });
