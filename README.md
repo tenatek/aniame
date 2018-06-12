@@ -2,6 +2,19 @@
 
 A simple, no-dependency JSON schema validator.
 
+This README contains:
+
+* [JSON schema specification](#json-schema-specification)
+  * [Objects](#objects)
+  * [Arrays](#arrays)
+  * [References](references)
+* [How to use](#how-to-use)
+  * [Installation](#installation)
+  * [Schema validation](#schema-validation)
+  * [Schema indexing](#schema-indexing)
+  * [Data validation](#data-validation)
+* [JSON paths](#json-paths)
+
 **WARNING:** This package does not comply with the [IETF's JSON Schema drafts](http://json-schema.org/), although there are some similarities. If full compliance is what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
 
 ## JSON schema specification
