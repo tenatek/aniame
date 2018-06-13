@@ -5,6 +5,7 @@
     "brace-style": "error",
     "comma-dangle": ["error", "never"],
     "curly": "error",
+    "eol-last": ["error", "always"],
     "indent": ["error", 2],
     "max-len": ["error", { "ignoreComments": true }],
     "no-multiple-empty-lines": ["error", { "max": 1 }],
