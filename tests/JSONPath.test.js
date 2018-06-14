@@ -1,6 +1,6 @@
 const JSONPath = require('../lib/JSONPath');
 
-test('accesses the right node in a simple object', () => {
+test('accesses the right node in a simple object', async () => {
   expect.assertions(1);
   let path = new JSONPath()
     .addPathSegment('a')
@@ -18,11 +18,11 @@ test('accesses the right node in a simple object', () => {
       ]
     }
   };
-  let result = path.resolve(object);
+  let result = await path.resolve(object);
   expect(result).toEqual({ d: 1 });
 });
 
-test('accesses various nodes in an array', () => {
+test('accesses various nodes in an array', async () => {
   expect.assertions(1);
   let path = new JSONPath()
     .addPathSegment('a')
@@ -45,11 +45,11 @@ test('accesses various nodes in an array', () => {
       ]
     }
   };
-  let result = path.resolve(object);
+  let result = await path.resolve(object);
   expect(result).toEqual([{ d: 1 }, { e: 2 }]);
 });
 
-test('handles dead ends appropriately', () => {
+test('handles dead ends appropriately', async () => {
   expect.assertions(1);
   let path = new JSONPath()
     .addPathSegment('a')
@@ -70,11 +70,11 @@ test('handles dead ends appropriately', () => {
       ]
     }
   };
-  let result = path.resolve(object);
+  let result = await path.resolve(object);
   expect(result).toEqual({ d: 1 });
 });
 
-test('handles nested arrays appropriately', () => {
+test('handles nested arrays appropriately', async () => {
   expect.assertions(1);
   let path = new JSONPath()
     .addPathSegment('a')
@@ -105,11 +105,11 @@ test('handles nested arrays appropriately', () => {
       ]
     }
   };
-  let result = path.resolve(object);
+  let result = await path.resolve(object);
   expect(result).toEqual([{ d: 1 }, { e: 2 }, { f: 3 }]);
 });
 
-test('handles illegal paths appropriately', () => {
+test('handles illegal paths appropriately', async () => {
   expect.assertions(1);
   let path = new JSONPath()
     .addPathSegment('a')
@@ -138,11 +138,11 @@ test('handles illegal paths appropriately', () => {
       ]
     }
   };
-  let result = path.resolve(object);
+  let result = await path.resolve(object);
   expect(result).toEqual([{ e: 2 }, { f: 3 }]);
 });
 
-test('replaces values on the object', () => {
+test('replaces values on the object', async () => {
   expect.assertions(2);
   let path = new JSONPath()
     .addPathSegment('a')
@@ -165,7 +165,7 @@ test('replaces values on the object', () => {
       ]
     }
   };
-  let result = path.resolve(object, result => {
+  let result = await path.resolve(object, result => {
     return result + 1;
   });
   expect(result).toEqual([4, 5]);
@@ -185,11 +185,11 @@ test('replaces values on the object', () => {
   });
 });
 
-test('replaces values in arrays', () => {
+test('replaces values in arrays', async () => {
   expect.assertions(2);
   let path = new JSONPath().addPathSegment(null);
   let object = [1, 2, 3];
-  let result = path.resolve(object, result => {
+  let result = await path.resolve(object, result => {
     return result + 1;
   });
   expect(result).toEqual([2, 3, 4]);
