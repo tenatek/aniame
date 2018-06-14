@@ -3,6 +3,7 @@
   "rules": {
     "arrow-body-style": ["error", "always"],
     "brace-style": "error",
+    "class-methods-use-this": "error",
     "comma-dangle": ["error", "never"],
     "curly": "error",
     "eol-last": ["error", "always"],
