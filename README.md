@@ -297,7 +297,7 @@ Will return:
 
 `Aniame.validateData(data, schema[, schemaDictionary, checkRequired, refCallback])`
 
-This asynchronous method checks that a value is valid under a given schema. It returns a `ValidationResult` and receives the following parameters:
+This asynchronous method checks that a value is valid under a given schema. It returns a `Promise` that resolves to a `ValidationResult` and receives the following parameters:
 
 * the `data`, the value to validate.
 * the `schema`, the Aniame schema to check the `data` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemaDictionary`.
@@ -353,10 +353,11 @@ Aniame.validateData({
     company: 'Springfield Power Plant',
     position: 'Nuclear Safety Inspector'
   }
-}, 'person', schemas);
+}, 'person', schemas).then((validationResult) => {
+  console.log(validationResult.success);
+  // prints true
+});
 ```
-
-Will return a `Promise` that will resolve to `true`.
 
 ## JSON paths
 
