@@ -10,6 +10,7 @@
     "indent": ["error", 2],
     "max-len": ["error", { "ignoreComments": true }],
     "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-var": "error",
     "padded-blocks": ["error", { "classes": "always" }],
     "prefer-template": "error"
   },
