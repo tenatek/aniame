@@ -367,7 +367,7 @@ These `JSONPath`s contain an array of the names of the properties that constitut
 Additionally, the following methods are available on `JSONPath`s:
 
 * to obtain a JSON pointer as defined in RFC 6901, call `jsonPath.pathAsPointer()`.
-* to resolve the path within an object, call `jsonPath.resolve(object)`.
+* to resolve the path within an object, call `jsonPath.resolve(object[, callback])`. If a `callback` is provided, it will receive the value matching the path and replace it, within the object, with its return value.
 
 ## Copyright & license
 
