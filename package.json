@@ -10,6 +10,7 @@
   "contributors": [
     "Ludovic Cyril Michel <ludovic@tenatek.com> (https://github.com/ludoviccyril)"
   ],
+  "repository": "github:tenatek/aniame",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^4.19.1",
