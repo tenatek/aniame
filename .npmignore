@@ -1,5 +1,3 @@
-node_modules
 tests
 .eslintrc
 .gitignore
-README.md
