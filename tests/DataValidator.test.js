@@ -233,3 +233,37 @@ test('references can be checked with a callback', async () => {
   expect(result.success).toBe(false);
   expect(result.getErrorPathsAsArrays()).toEqual([['pets', 1, 'race']]);
 });
+
+test('callback can return null', async () => {
+  expect.assertions(1);
+  let result = await DataValidator.validateData(
+    {
+      name: 'true',
+      telephone: 534,
+      email: 'test',
+      pets: [
+        {
+          name: {
+            first: 'tom'
+          }
+        },
+        {
+          name: {
+            first: 'blue'
+          },
+          race: {
+            name: 'cocker',
+            classification: 3
+          }
+        }
+      ]
+    },
+    'person',
+    schemas,
+    true,
+    () => {
+      return null;
+    }
+  );
+  expect(result.success).toBe(true);
+});
