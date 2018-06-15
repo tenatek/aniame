@@ -1,4 +1,5 @@
-const JSONPath = require('../lib/JSONPath');
+const { JSONPath } = require('acamani');
+
 const SchemaIndexer = require('../lib/SchemaIndexer');
 
 const schema = {
