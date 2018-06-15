@@ -222,6 +222,7 @@ test('references can be checked with a callback', async () => {
     },
     'person',
     schemas,
+    true,
     (s, m, d) => {
       if (d === 6) {
         return true;
