@@ -4,6 +4,7 @@ A simple, no-dependency JSON schema validator.
 
 [![npm version](https://img.shields.io/npm/v/aniame.svg)](https://www.npmjs.com/package/aniame)
 [![npm downloads](https://img.shields.io/npm/dm/aniame.svg)](https://www.npmjs.com/package/aniame)
+[![build status](https://travis-ci.org/tenatek/aniame.svg?branch=master)](https://travis-ci.org/tenatek/aniame)
 
 This README contains:
 
