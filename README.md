@@ -297,14 +297,14 @@ Will return:
 
 ### Data validation 
 
-`Aniame.validateData(data, schema[, schemaDictionary, checkRequired, refCallback])`
+`Aniame.validateData(data, schema[, schemaDictionary, enforceRequired, refCallback])`
 
 This asynchronous method checks that a value is valid under a given schema. It returns a `Promise` that resolves to a `ValidationResult` and receives the following parameters:
 
 * the `data`, the value to validate.
 * the `schema`, the Aniame schema to check the `data` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemaDictionary`.
 * optionally, `schemaDictionary`, a JSON object. Each property on `schemaDictionary` should be the name of a specific schema, and its associated value should be the schema definition.
-* optionally, `checkRequired`, a boolean to indicate whether to enforce `required: true`. The default is `true`.
+* optionally, `enforceRequired`, a boolean to indicate whether to enforce `required: true`. The default is `true`.
 * optionally, `refCallback(data, ref, schemaDictionary)`, an asynchronous function triggered for each `type: 'ref'` key/value pair. If it returns `true` or equivalent, the node is considered valid and the validation moves on. If it returns `false` or equivalent, the node is considered invalid. If it returns `null`, or if no callback is provided, the node will be checked against the appropriate schema, pulled from `schemaDictionary`.
 
 `ValidationResult`s have two properties:
