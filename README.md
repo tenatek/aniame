@@ -242,7 +242,7 @@ It returns an `IndexingResult` and receives the following parameters:
 * the `schema` to index.
 * optionally, `descriptorProperties`, an array of strings, the names of the properties whose values should be collected from the indexed descriptors.
 
-`IndexingResult`s have one property, `indexes`, an object whose properties are the various indexes specified within `indexAs` throughout the schema.
+`IndexingResult`s is an object whose properties are the various indexes specified within `indexAs` throughout the schema.
 
 Each index is an array of objects, which represent the descriptors that belong to the index. For each descriptor, there will be a `path` and `data` object, where the `descriptorProperties` for the descriptor are stored.
 
@@ -276,22 +276,20 @@ Will return:
 
 ```javascript
 {
-  indexes: {
-    contactInfo: [
-      {
-        path: // the JSONPath of 'telephone'
-        data: {
-          description: 'A phone number'
-        }
-      },
-      {
-        path: // the JSONPath of 'email'
-        data: {
-          description: 'An email'
-        }
+  contactInfo: [
+    {
+      path: // the JSONPath of 'telephone'
+      data: {
+        description: 'A phone number'
       }
-    ]
-  }
+    },
+    {
+      path: // the JSONPath of 'email'
+      data: {
+        description: 'An email'
+      }
+    }
+  ]
 }
 ```
 
