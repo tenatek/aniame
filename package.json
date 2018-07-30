@@ -18,6 +18,6 @@
     "jest": "^23.3.0"
   },
   "dependencies": {
-    "acamani": "^1.0.1"
+    "acamani": "^2.0.1"
   }
 }

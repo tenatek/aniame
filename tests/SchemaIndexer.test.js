@@ -56,26 +56,19 @@ test('get correct relation paths', () => {
   let expectedResults = {
     ref: [
       {
-        path: new JSONPath().addPathSegment('telephone'),
+        path: JSONPath.from(['telephone']),
         data: {
           ref: 'some-model'
         }
       },
       {
-        path: new JSONPath()
-          .addPathSegment('pets')
-          .addPathSegment(null)
-          .addPathSegment('name')
-          .addPathSegment('first'),
+        path: JSONPath.from(['pets', '*', 'name', 'first']),
         data: {
           ref: 'some-model'
         }
       },
       {
-        path: new JSONPath()
-          .addPathSegment('pets')
-          .addPathSegment(null)
-          .addPathSegment('age'),
+        path: JSONPath.from(['pets', '*', 'age']),
         data: {
           ref: 'some-model'
         }
