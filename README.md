@@ -18,7 +18,6 @@ This README contains:
   * [Schema validation](#schema-validation)
   * [Schema indexing](#schema-indexing)
   * [Data validation](#data-validation)
-* [JSON paths](#json-paths)
 * [Copyright & license](#copyright--license)
 
 **WARNING:** This package does not comply with the [IETF's JSON Schema drafts](http://json-schema.org/), although there are some similarities. If full compliance is what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
@@ -244,7 +243,7 @@ It returns an `IndexingResult` and receives the following parameters:
 
 `IndexingResult`s is an object whose properties are the various indexes specified within `indexAs` throughout the schema.
 
-Each index is an array of objects, which represent the descriptors that belong to the index. For each descriptor, there will be a `path` and `data` object, where the `descriptorProperties` for the descriptor are stored.
+Each index is an array of objects, which represent the descriptors that belong to the index. For each descriptor, there will be a `path` and `data` object, the latter being where the `descriptorProperties` for the descriptor are stored.
 
 For example:
 
@@ -278,13 +277,13 @@ Will return:
 {
   contactInfo: [
     {
-      path: // the JSONPath of 'telephone'
+      path: // the path of 'telephone', as an array
       data: {
         description: 'A phone number'
       }
     },
     {
-      path: // the JSONPath of 'email'
+      path: // the path of 'email', as an array
       data: {
         description: 'An email'
       }
@@ -308,7 +307,7 @@ This asynchronous method checks that a value is valid under a given schema. It r
 `ValidationResult`s have two properties:
 
 * `success`, a boolean indicating whether the data is valid.
-* `errorPaths` if `success` is `false`, an array of the paths within the validated object where the validation failed.
+* `errorPaths` if `success` is `false`, an array of the paths within the validated object where the validation failed. Each path is represented as an array.
 
 For example:
 
@@ -358,17 +357,6 @@ Aniame.validateData({
   // prints true
 });
 ```
-
-## JSON paths
-
-Both `IndexingResult`s and `ValidationResult`s contain `JSONPath`s, which represent the path of a node within a JSON object. 
-
-These `JSONPath`s contain an array of the names of the properties that constitute the path: `pathAsArray`.
-
-Additionally, the following methods are available on `JSONPath`s:
-
-* to obtain a JSON pointer as defined in RFC 6901, call `jsonPath.pathAsPointer()`.
-* to resolve the path within an object, call the asynchronous method `jsonPath.resolve(object[, callback])`. If an (asynchronous) `callback` is provided, it will receive the value matching the path and replace it, within the object, with its return value.
 
 ## Copyright & license
 
