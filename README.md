@@ -230,7 +230,7 @@ Will return `true`.
 
 `Aniame.validateData(data, schema[, schemaDictionary, enforceRequired, refCallback])`
 
-This asynchronous method checks that a value is valid under a given schema. It returns a `Promise` that resolves to a `ValidationResult` and receives the following parameters:
+This asynchronous method checks that a value is valid under a given schema. It returns a `Promise` that resolves to an array and receives the following parameters:
 
 * the `data`, the value to validate.
 * the `schema`, the Aniame schema to check the `data` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemaDictionary`.
@@ -238,10 +238,7 @@ This asynchronous method checks that a value is valid under a given schema. It r
 * optionally, `enforceRequired`, a boolean to indicate whether to enforce `required: true`. The default is `true`.
 * optionally, `refCallback(data, ref, schemaDictionary)`, an asynchronous function triggered for each `type: 'ref'` key/value pair. If it returns `true` or equivalent, the node is considered valid and the validation moves on. If it returns `false` or equivalent, the node is considered invalid. If it returns `null`, or if no callback is provided, the node will be checked against the appropriate schema, pulled from `schemaDictionary`.
 
-`ValidationResult`s have two properties:
-
-* `success`, a boolean indicating whether the data is valid.
-* `errorPaths` if `success` is `false`, an array of the paths within the validated object where the validation failed. Each path is represented as an array.
+The resulting array contains the paths within the validated object where the validation failed. If the array is empty, the validation is successful.
 
 For example:
 
@@ -281,15 +278,16 @@ const schemas = {
 
 Aniame.validateData({
   name: 'Homer Simpson',
-  email: 'homer@springfieldpowerplant.com',
-  job: {
-    company: 'Springfield Power Plant',
-    position: 'Nuclear Safety Inspector'
-  }
-}, 'person', schemas).then((validationResult) => {
-  console.log(validationResult.success);
-  // prints true
-});
+  email: 45
+}, 'person', schemas);
+```
+
+Will return a `Promise` that will resolve to:
+
+```javascript
+[
+  ['email']
+]
 ```
 
 ## Copyright & license
