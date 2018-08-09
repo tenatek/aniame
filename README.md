@@ -16,7 +16,6 @@ This README contains:
 * [How to use](#how-to-use)
   * [Installation](#installation)
   * [Schema validation](#schema-validation)
-  * [Schema indexing](#schema-indexing)
   * [Data validation](#data-validation)
 * [Copyright & license](#copyright--license)
 
@@ -67,7 +66,6 @@ _Descriptors_ are JSON objects that have the following keys:
 * a `type` key (either `string`, `number`, `boolean`, `object`, `array` or `ref`).
 * an optional `description` key, which, if present, must be a string.
 * an optional `required` key (`true` or `false`).
-* an optional `indexAs` key (see [schema indexing](#schema-indexing)).
 * other keys depending on the `type`.
 
 ### Objects
@@ -227,70 +225,6 @@ Aniame.validateSchema({
 ```
 
 Will return `true`.
-
-### Schema indexing
-
-Sometimes, it can be useful to index specific descriptors within a schema, i.e. store their path within the schema and collect the values of certain of their properties. This can be done by adding the property `indexAs` on such descriptors. This property will be an array of strings, each string being the name of an index that the descriptor should belong to.
-
-To retrieve the indexes, we call:
-
-`Aniame.indexSchema(schema[, descriptorProperties])`
-
-It returns an `IndexingResult` and receives the following parameters:
-
-* the `schema` to index.
-* optionally, `descriptorProperties`, an array of strings, the names of the properties whose values should be collected from the indexed descriptors.
-
-`IndexingResult`s is an object whose properties are the various indexes specified within `indexAs` throughout the schema.
-
-Each index is an array of objects, which represent the descriptors that belong to the index. For each descriptor, there will be a `path` and `data` object, the latter being where the `descriptorProperties` for the descriptor are stored.
-
-For example:
-
-```javascript
-Aniame.indexSchema({
-  type: 'object',
-  properties: {
-    name: {
-      type: 'string'
-    },
-    age: {
-      type: 'number'
-    },
-    telephone: {
-      type: 'number',
-      description: 'A phone number',
-      indexAs: ['contactInfo']
-    },
-    email: {
-      type: 'number',
-      description: 'An email',
-      indexAs: ['contactInfo']
-    }
-  }
-}, ['description']);
-```
-
-Will return:
-
-```javascript
-{
-  contactInfo: [
-    {
-      path: // the path of 'telephone', as an array
-      data: {
-        description: 'A phone number'
-      }
-    },
-    {
-      path: // the path of 'email', as an array
-      data: {
-        description: 'An email'
-      }
-    }
-  ]
-}
-```
 
 ### Data validation 
 
