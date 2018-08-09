@@ -63,11 +63,11 @@ const schemas = {
 test('non-objects can be validated', async () => {
   expect.assertions(1);
   let result = await DataValidator.validateData('test', schemas.string);
-  expect(result.success).toBe(true);
+  expect(result).toEqual([]);
 });
 
 test('unknown attributes are rejected', async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   let result = await DataValidator.validateData(
     {
       name: 'Tim',
@@ -77,8 +77,7 @@ test('unknown attributes are rejected', async () => {
     },
     schemas.person
   );
-  expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['test']]);
+  expect(result).toEqual([['test']]);
 });
 
 test('optional attributes can be omitted', async () => {
@@ -90,11 +89,11 @@ test('optional attributes can be omitted', async () => {
     },
     schemas.person
   );
-  expect(result.success).toBe(true);
+  expect(result).toEqual([]);
 });
 
 test('required attributes cannot be omitted', async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   let result = await DataValidator.validateData(
     {
       name: 'true',
@@ -102,12 +101,11 @@ test('required attributes cannot be omitted', async () => {
     },
     schemas.person
   );
-  expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['email']]);
+  expect(result).toEqual([['email']]);
 });
 
 test('types are checked', async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   let result = await DataValidator.validateData(
     {
       name: true,
@@ -116,12 +114,11 @@ test('types are checked', async () => {
     },
     schemas.person
   );
-  expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['name'], ['telephone']]);
+  expect(result).toEqual([['name'], ['telephone']]);
 });
 
 test('array items are validated', async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   let result = await DataValidator.validateData(
     {
       name: 'true',
@@ -138,12 +135,11 @@ test('array items are validated', async () => {
     },
     schemas.person
   );
-  expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 1]]);
+  expect(result).toEqual([['pets', 1]]);
 });
 
 test('nested objects are validated', async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   let result = await DataValidator.validateData(
     {
       name: 'true',
@@ -162,8 +158,7 @@ test('nested objects are validated', async () => {
     },
     schemas.person
   );
-  expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 1, 'name'], ['pets', 1, 'age']]);
+  expect(result).toEqual([['pets', 1, 'name'], ['pets', 1, 'age']]);
 });
 
 test('references can be checked against their schema', async () => {
@@ -193,11 +188,11 @@ test('references can be checked against their schema', async () => {
     'person',
     schemas
   );
-  expect(result.success).toBe(true);
+  expect(result).toEqual([]);
 });
 
 test('references can be checked with a callback', async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   let result = await DataValidator.validateData(
     {
       name: 'true',
@@ -227,8 +222,7 @@ test('references can be checked with a callback', async () => {
       return false;
     }
   );
-  expect(result.success).toBe(false);
-  expect(result.errorPaths).toEqual([['pets', 1, 'race']]);
+  expect(result).toEqual([['pets', 1, 'race']]);
 });
 
 test('callback can return null', async () => {
@@ -262,5 +256,5 @@ test('callback can return null', async () => {
       return null;
     }
   );
-  expect(result.success).toBe(true);
+  expect(result).toEqual([]);
 });
