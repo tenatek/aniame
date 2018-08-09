@@ -1,6 +1,6 @@
 {
   "name": "aniame",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A simple JSON schema validator.",
   "main": "Aniame.js",
   "scripts": {
@@ -12,12 +12,12 @@
   ],
   "repository": "github:tenatek/aniame",
   "license": "MIT",
+  "dependencies": {
+    "acamani": "^2.0.1"
+  },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-tenatek": "^1.1.0",
     "jest": "^23.3.0"
-  },
-  "dependencies": {
-    "acamani": "^2.0.1"
   }
 }
