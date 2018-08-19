@@ -1,6 +1,6 @@
 # Aniame
 
-A simple JSON schema validator.
+A simple JSON schema specification & utility.
 
 [![npm version](https://img.shields.io/npm/v/aniame.svg)](https://www.npmjs.com/package/aniame)
 [![npm downloads](https://img.shields.io/npm/dm/aniame.svg)](https://www.npmjs.com/package/aniame)
@@ -16,14 +16,14 @@ This README contains:
 * [How to use](#how-to-use)
   * [Installation](#installation)
   * [Schema validation](#schema-validation)
-  * [Data validation](#data-validation)
+  * [Resource validation](#resource-validation)
 * [Copyright & license](#copyright--license)
 
 **WARNING:** This package does not comply with the [IETF's JSON Schema drafts](http://json-schema.org/), although there are some similarities. If full compliance is what you're looking for, there's [ajv](https://github.com/epoberezkin/ajv), [djv](https://github.com/korzio/djv), and more.
 
 ## JSON schema specification
 
-To describe a JavaScript primitive or data structure with an Aniame schema, we use small, nestable objects called _descriptors_.
+To describe a JavaScript primitive or data structure (a _resource_) with an Aniame schema, we use small, nestable objects called _descriptors_.
 
 For example, the following array:
 
@@ -72,9 +72,9 @@ _Descriptors_ are JSON objects that have the following properties:
 
 `type: 'object'`
 
-Used to indicate that the expected value is a JSON object. 
+Used to indicate that the resource should be a JSON object. 
 
-With `object`s, the _descriptor_ must contain the `properties` property to describe what the object should contain. `properties`'s value should be an object containing the _descriptors_ of each expected properties.
+With `object`s, the _descriptor_ must contain the `properties` property to describe what the object should contain. `properties`'s value should be an object containing the _descriptors_ of each expected property on the resource.
 
 ```javascript
 {
@@ -114,7 +114,7 @@ The following object is valid under the above schema.
 
 `type: 'array'`
 
-Used to indicate that the expected value is an array. 
+Used to indicate that the resource should be an array. 
 
 With `array`s, the _descriptor_ must contain the `items` property, whose value is itself the _descriptor_ of the items of the array.
 
@@ -145,11 +145,11 @@ The following object is valid under the above schema.
 
 `type: 'ref'`
 
-Used to indicate that the expected value is a reference to another entity, itself compliant with this or another schema. 
+Used to indicate that the resource should be a reference to another resource, itself compliant with this or another schema. 
 
-With `type: 'ref'`, the _descriptor_ must contain the `ref` property, whose value is a string, the name of the schema that the referenced entity is compliant with.
+With `type: 'ref'`, the _descriptor_ must contain the `ref` property, whose value is a string, the name of the schema that the referenced resource should be compliant with.
 
-References can be anything, as they will be validated by an optional, user-provided callback. If no callback is provided, Aniame will validate the value against the schema specified by the `ref` property.
+References can be anything, as they will be validated by an optional, user-provided callback. If no callback is provided, Aniame will assume that the value is the referenced resource itself, and will validate it against the schema specified by the `ref` property.
 
 ```javascript
 {
@@ -226,14 +226,14 @@ Aniame.validateSchema({
 
 Will return `true`.
 
-### Data validation 
+### Resource validation 
 
-`Aniame.validateResource(data, schema[, schemas, enforceRequired, refCallback])`
+`Aniame.validateResource(resource, schema[, schemas, enforceRequired, refCallback])`
 
 This asynchronous method checks that a value is valid under a given schema. It returns a `Promise` that resolves to an array and receives the following parameters:
 
-* the `data`, the value to validate.
-* the `schema`, the Aniame schema to check the `data` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemas`.
+* the `resource`, the value to validate.
+* the `schema`, the Aniame schema to check the `resource` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemas`.
 * optionally, `schemas`, a JSON object. Each property on `schemas` should be the name of a specific schema, and its associated value should be the schema definition.
 * optionally, `enforceRequired`, a boolean to indicate whether to enforce `required: true`. The default is `true`.
 * optionally, `refCallback(node, schemaName)`, an asynchronous function that will run on each `type: 'ref'` node. If it resolves to the keyword `'valid'`, the node is considered valid and the validation moves on. If it resolves to the keyword `'false'`, the node is considered invalid and the validation also moves on. If it resolves to anything else, or if no callback is provided, the node will be checked against the appropriate schema, pulled from `schemas`.

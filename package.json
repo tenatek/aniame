@@ -1,7 +1,7 @@
 {
   "name": "aniame",
   "version": "4.0.0",
-  "description": "A simple JSON schema validator.",
+  "description": "A simple JSON schema specification & utility.",
   "main": "Aniame.js",
   "scripts": {
     "test": "jest"
