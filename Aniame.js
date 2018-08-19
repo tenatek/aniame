@@ -1,4 +1,4 @@
 const { validateSchema } = require('./lib/SchemaValidator');
-const { validateData } = require('./lib/DataValidator');
+const { validateResource } = require('./lib/ResourceValidator');
 
-module.exports = { validateSchema, validateData };
+module.exports = { validateSchema, validateResource };

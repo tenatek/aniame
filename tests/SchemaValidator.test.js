@@ -1,6 +1,6 @@
 const SchemaValidator = require('../lib/SchemaValidator');
 
-test('descriptors can have descriptions', () => {
+test('descriptors can have additional properties', () => {
   expect(
     SchemaValidator.validateSchema({
       type: 'object',
@@ -20,10 +20,7 @@ test('rejects descriptors that are not objects', () => {
     SchemaValidator.validateSchema({
       type: 'object',
       properties: {
-        name: 'Tim',
-        telephone: 123456,
-        email: 'blue',
-        test: true
+        name: 'Tim'
       }
     })
   ).toBe(false);
@@ -124,51 +121,4 @@ test('complex example', () => {
       ['person']
     )
   ).toBe(true);
-});
-
-test('rejects unknown properties', () => {
-  expect(
-    SchemaValidator.validateSchema({
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-          required: true,
-          blue: true
-        },
-        telephone: {
-          type: 'number'
-        },
-        email: {
-          type: 'string',
-          required: true
-        },
-        pets: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              name: {
-                type: 'object',
-                properties: {
-                  first: {
-                    type: 'string',
-                    required: true
-                  },
-                  family: {
-                    type: 'string'
-                  }
-                },
-                required: true
-              },
-              age: {
-                type: 'number',
-                required: true
-              }
-            }
-          }
-        }
-      }
-    })
-  ).toBe(false);
 });

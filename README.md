@@ -61,12 +61,12 @@ And:
 
 Are _descriptors_.
 
-_Descriptors_ are JSON objects that have the following keys:
+_Descriptors_ are JSON objects that have the following properties:
 
-* a `type` key (either `string`, `number`, `boolean`, `object`, `array` or `ref`).
-* an optional `description` key, which, if present, must be a string.
-* an optional `required` key (`true` or `false`).
-* other keys depending on the `type`.
+* a required `type` property (either `string`, `number`, `boolean`, `object`, `array` or `ref`).
+* other required properties depending on the `type`.
+* an optional `required` property (must be a boolean).
+* any other property that you may want to add.
 
 ### Objects
 
@@ -74,7 +74,7 @@ _Descriptors_ are JSON objects that have the following keys:
 
 Used to indicate that the expected value is a JSON object. 
 
-With `object`s, the _descriptor_ must contain the `properties` key to describe what the object should contain. `properties`'s value should be an object with the expected keys, and, for each key, a _descriptor_ of the key's expected value.
+With `object`s, the _descriptor_ must contain the `properties` property to describe what the object should contain. `properties`'s value should be an object containing the _descriptors_ of each expected properties.
 
 ```javascript
 {
@@ -116,7 +116,7 @@ The following object is valid under the above schema.
 
 Used to indicate that the expected value is an array. 
 
-With `array`s, the _descriptor_ must contain the `items` key, whose value is itself the _descriptor_ of the items of the array.
+With `array`s, the _descriptor_ must contain the `items` property, whose value is itself the _descriptor_ of the items of the array.
 
 ```javascript
 {
@@ -147,9 +147,9 @@ The following object is valid under the above schema.
 
 Used to indicate that the expected value is a reference to another entity, itself compliant with this or another schema. 
 
-With `type: 'ref'`, the _descriptor_ must contain the `ref` key, whose value is a string, the name of the schema that the referenced entity is compliant with.
+With `type: 'ref'`, the _descriptor_ must contain the `ref` property, whose value is a string, the name of the schema that the referenced entity is compliant with.
 
-References can be anything, as they will be validated by an optional, user-provided callback. If no callback is provided, Aniame will validate the value against the schema specified by the `ref` key.
+References can be anything, as they will be validated by an optional, user-provided callback. If no callback is provided, Aniame will validate the value against the schema specified by the `ref` property.
 
 ```javascript
 {
@@ -228,15 +228,15 @@ Will return `true`.
 
 ### Data validation 
 
-`Aniame.validateData(data, schema[, schemaDictionary, enforceRequired, refCallback])`
+`Aniame.validateResource(data, schema[, schemas, enforceRequired, refCallback])`
 
 This asynchronous method checks that a value is valid under a given schema. It returns a `Promise` that resolves to an array and receives the following parameters:
 
 * the `data`, the value to validate.
-* the `schema`, the Aniame schema to check the `data` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemaDictionary`.
-* optionally, `schemaDictionary`, a JSON object. Each property on `schemaDictionary` should be the name of a specific schema, and its associated value should be the schema definition.
+* the `schema`, the Aniame schema to check the `data` against. It can either be the full schema, or just the name of the schema, in which case the full schema will be pulled from `schemas`.
+* optionally, `schemas`, a JSON object. Each property on `schemas` should be the name of a specific schema, and its associated value should be the schema definition.
 * optionally, `enforceRequired`, a boolean to indicate whether to enforce `required: true`. The default is `true`.
-* optionally, `refCallback(data, ref, schemaDictionary)`, an asynchronous function triggered for each `type: 'ref'` key/value pair. If it returns `true` or equivalent, the node is considered valid and the validation moves on. If it returns `false` or equivalent, the node is considered invalid. If it returns `null`, or if no callback is provided, the node will be checked against the appropriate schema, pulled from `schemaDictionary`.
+* optionally, `refCallback(node, schemaName)`, an asynchronous function that will run on each `type: 'ref'` node. If it resolves to the keyword `'valid'`, the node is considered valid and the validation moves on. If it resolves to the keyword `'false'`, the node is considered invalid and the validation also moves on. If it resolves to anything else, or if no callback is provided, the node will be checked against the appropriate schema, pulled from `schemas`.
 
 The resulting array contains the paths within the validated object where the validation failed. If the array is empty, the validation is successful.
 
@@ -276,7 +276,7 @@ const schemas = {
   }
 };
 
-Aniame.validateData({
+Aniame.validateResource({
   name: 'Homer Simpson',
   email: 45
 }, 'person', schemas);

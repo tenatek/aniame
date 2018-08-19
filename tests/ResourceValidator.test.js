@@ -1,4 +1,4 @@
-const DataValidator = require('../lib/DataValidator');
+const ResourceValidator = require('../lib/ResourceValidator');
 
 const schemas = {
   person: {
@@ -62,13 +62,13 @@ const schemas = {
 
 test('non-objects can be validated', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData('test', schemas.string);
+  let result = await ResourceValidator.validateResource('test', schemas.string);
   expect(result).toEqual([]);
 });
 
 test('unknown attributes are rejected', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'Tim',
       telephone: 123456,
@@ -82,7 +82,7 @@ test('unknown attributes are rejected', async () => {
 
 test('optional attributes can be omitted', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'Tim',
       email: 'blue'
@@ -94,7 +94,7 @@ test('optional attributes can be omitted', async () => {
 
 test('required attributes cannot be omitted', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'true',
       telephone: 534
@@ -106,7 +106,7 @@ test('required attributes cannot be omitted', async () => {
 
 test('types are checked', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: true,
       telephone: '534',
@@ -119,7 +119,7 @@ test('types are checked', async () => {
 
 test('array items are validated', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'true',
       telephone: 534,
@@ -140,7 +140,7 @@ test('array items are validated', async () => {
 
 test('nested objects are validated', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'true',
       telephone: 534,
@@ -163,7 +163,7 @@ test('nested objects are validated', async () => {
 
 test('references can be checked against their schema', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'true',
       telephone: 534,
@@ -193,7 +193,7 @@ test('references can be checked against their schema', async () => {
 
 test('references can be checked with a callback', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'true',
       telephone: 534,
@@ -215,19 +215,19 @@ test('references can be checked with a callback', async () => {
     'person',
     schemas,
     true,
-    (s, m, d) => {
-      if (d === 6) {
-        return true;
+    node => {
+      if (node === 5) {
+        return 'valid';
       }
-      return false;
+      return 'invalid';
     }
   );
-  expect(result).toEqual([['pets', 1, 'race']]);
+  expect(result).toEqual([]);
 });
 
-test('callback can return null', async () => {
+test('callback can trigger full check', async () => {
   expect.assertions(1);
-  let result = await DataValidator.validateData(
+  let result = await ResourceValidator.validateResource(
     {
       name: 'true',
       telephone: 534,
@@ -244,7 +244,7 @@ test('callback can return null', async () => {
           },
           race: {
             name: 'cocker',
-            classification: 3
+            classification: 'test'
           }
         }
       ]
@@ -253,8 +253,8 @@ test('callback can return null', async () => {
     schemas,
     true,
     () => {
-      return null;
+      return 'check';
     }
   );
-  expect(result).toEqual([]);
+  expect(result).toEqual([['pets', 1, 'race', 'classification']]);
 });
