@@ -2,16 +2,23 @@
   "name": "aniame",
   "version": "4.0.0",
   "description": "A simple JSON schema specification & utility.",
-  "main": "Aniame.js",
-  "scripts": {
-    "test": "jest"
-  },
+  "keywords": [
+    "json-schema",
+    "json",
+    "schema",
+    "validator",
+    "nodejs"
+  ],
   "author": "Tenatek <contact@tenatek.com> (https://tenatek.com)",
   "contributors": [
     "Ludovic Cyril Michel <ludovic@tenatek.com> (https://github.com/ludoviccyril)"
   ],
-  "repository": "github:tenatek/aniame",
   "license": "MIT",
+  "repository": "github:tenatek/aniame",
+  "main": "Aniame.js",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "acamani": "^2.0.1"
   },
