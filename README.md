@@ -5,7 +5,7 @@ A simple JSON schema specification & utility.
 [![npm version](https://img.shields.io/npm/v/aniame.svg)](https://www.npmjs.com/package/aniame)
 [![npm downloads](https://img.shields.io/npm/dm/aniame.svg)](https://www.npmjs.com/package/aniame)
 [![build status](https://travis-ci.org/tenatek/aniame.svg?branch=master)](https://travis-ci.org/tenatek/aniame)
-[![coverage status](https://coveralls.io/repos/github/tenatek/aniame/badge.svg?branch=master)](https://coveralls.io/github/tenatek/aniame?branch=master)
+[![coverage status](https://coveralls.io/repos/github/tenatek/aniame/badge.svg?branch=master&service=github)](https://coveralls.io/github/tenatek/aniame?branch=master)
 
 This README contains:
 
